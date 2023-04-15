@@ -1,0 +1,1 @@
+(()=>{let t=document.createElement("div");t.setAttribute("class","board");for(let e=0;e<8;e++)for(let d=0;d<8;d++){let l=document.createElement("div");l.setAttribute("id",`${e}${d}`),e%2!=0&&d%2!=0||e%2==0&&d%2==0?l.setAttribute("class","black"):l.setAttribute("class","white"),t.append(l)}document.body.appendChild(t)})();
