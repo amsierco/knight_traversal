@@ -1,4 +1,4 @@
-const Graph = () => {
+export const Graph = () => {
     let numOfVert = 0;
     let AdjList = new Map();
 
@@ -9,7 +9,7 @@ const Graph = () => {
 
     const addBiEdge = (v, w) => {
         AdjList.get(v).push(w);
-        AdjList.get(w).push(v);
+        //AdjList.get(w).push(v);
     }
 
     const printGraph = () => {
@@ -37,6 +37,7 @@ const Graph = () => {
 };
 
 // GRAPH TESTING
+/*
 let test = Graph();
 for (let i = 0; i < 6; i++) {
     test.addVertex(i);
@@ -51,3 +52,4 @@ test.addBiEdge(4,0);
 test.addBiEdge(5,0);
 test.printGraph();
 console.log(test.numOfVert);
+*/

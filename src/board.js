@@ -1,3 +1,5 @@
+import { Graph } from "./modules/Graph";
+
 function getKnight() {
     let knight = document.createElement('div');
     knight.setAttribute('class', 'knight');
@@ -5,28 +7,66 @@ function getKnight() {
     return knight;
 };
 
-const createBoard = (() => {
-	
-    let board = document.createElement('div');
-    board.setAttribute('class', 'board');
-  
-      for(let i=0; i<8; i++){
-        for(let j=0; j<8; j++){
-          let boardTile = document.createElement('div');
-          boardTile.setAttribute('id', `${i}${j}`); //RowColumn
-        if(i%2 != 0 && j%2 !=0){
-            boardTile.setAttribute('class', 'black');
-        } else if (i%2 == 0 && j%2 == 0){
-            boardTile.setAttribute('class', 'black');
-        } else {
-            boardTile.setAttribute('class', 'white');
+function getValidLoc(row, col){
+    let potLoc = [
+        [row+2, col-1],
+        [row+2, col+1],
+        [row-2, col-1],
+        [row-2, col+1],
+        [row+1, col-2],
+        [row-1, col-2],
+        [row+1, col+2],
+        [row-1, col+2]
+    ];
+    let validLoc = [];
+
+    for(let loc of potLoc){
+        if(!(loc[0] < 0) && !(loc[0] > 7) && !(loc[1] < 0) && !(loc[1] > 7)){
+            let valid = (loc[0]*10)+loc[1];
+            validLoc.push(valid);
         }
-        board.append(boardTile);   
-      }
     }
-    document.body.appendChild(board);
 
-    // Initial position for knight
-    document.getElementById('00').appendChild(getKnight());
+    return validLoc;
+}
 
+const createBoard = (() => {
+    let boardDOM = document.createElement('div');
+    boardDOM.setAttribute('class', 'board');
+    let board = Graph();
+  
+    // DOM & Vertex creation
+    for(let i=0; i<8; i++){
+        for(let j=0; j<8; j++){
+            let boardTile = document.createElement('div');
+            boardTile.setAttribute('id', `${i}${j}`); //RowColumn
+
+            board.addVertex((i*10)+j); //Makes vertex ij
+
+            if(i%2 != 0 && j%2 !=0){
+                boardTile.setAttribute('class', 'black');
+            } else if (i%2 == 0 && j%2 == 0){
+                boardTile.setAttribute('class', 'black');
+            } else {
+                boardTile.setAttribute('class', 'white');
+            }
+            boardDOM.append(boardTile);   
+        }
+    }
+    document.body.appendChild(boardDOM);
+
+    // Edge creation
+    for(let i=0; i<8; i++){
+        for(let j=0; j<8; j++){
+            let validLoc = getValidLoc(i, j);
+            for(let loc of validLoc){
+                board.addBiEdge(((i*10)+j), loc);
+            }
+        }
+    }
+
+    // Initial position for knight [TEMP]
+    document.getElementById('23').appendChild(getKnight());
+    //Graph Testing
+    board.printGraph();
   })();
