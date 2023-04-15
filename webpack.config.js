@@ -3,7 +3,8 @@ const path = require('path');
 module.exports = {
   entry: [ 
     './src/board.js',
-    './src/modules/Graph.js'
+    './src/modules/Graph.js',
+    './src/logic.js'
   ],
   output: {
     filename: 'main.js',

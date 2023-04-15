@@ -1,9 +1,11 @@
 export const Graph = () => {
     let numOfVert = 0;
     let AdjList = new Map();
+    let VisitedList = new Map();
 
     const addVertex = (v) => {
         AdjList.set(v, []);
+        VisitedList.set(v, false);
         numOfVert++;
     }
 
@@ -28,11 +30,16 @@ export const Graph = () => {
         }
     }
 
+    const bfs = (start, end) => {
+        VisitedList.get(start).set(true);
+    }
+
     return {
         get numOfVert(){return numOfVert;},
         addVertex,
         addBiEdge,
-        printGraph
+        printGraph,
+        bfs
     }
 };
 
