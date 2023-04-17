@@ -4,7 +4,9 @@ module.exports = {
   entry: [ 
     './src/board.js',
     './src/modules/Graph.js',
-    './src/logic.js'
+    './src/logic.js',
+    './src/modules/Queue.js',
+    './src/modules/Stack.js'
   ],
   output: {
     filename: 'main.js',

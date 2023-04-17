@@ -66,9 +66,9 @@ const createBoard = (() => {
     }
 
     // Initial position for knight [TEMP]
-    document.getElementById('00').appendChild(getKnight());
+    document.getElementById('40').appendChild(getKnight());
     //Graph Testing
-    board.printGraph();
+    //board.printGraph();
     return board;
   });
 

@@ -1,7 +1,11 @@
+import { Queue } from "./Queue";
+import { Stack } from "./Stack";
+
 export const Graph = () => {
     let numOfVert = 0;
     let AdjList = new Map();
-    let VisitedList = new Map();
+
+    let VisitedList = new Map(); //TEMP Repetition concerns
 
     const addVertex = (v) => {
         AdjList.set(v, []);
@@ -31,7 +35,46 @@ export const Graph = () => {
     }
 
     const bfs = (start, end) => {
-        VisitedList.get(start).set(true);
+        // Stores visited nodes
+        VisitedList.set(start, true);
+
+        // Unvisited queue
+        let unvisited = Queue();
+        unvisited.enqueue(start);
+
+        // Visited path stack
+        let visited = Stack();
+
+        // Loop until all nodes are visited
+        while(unvisited.isEmpty() != true){
+            let current = unvisited.peek();
+            unvisited.dequeue();
+            visited.push(current);
+
+            // Enqueue neighboring nodes
+            for(let neighbor of AdjList.get(current)){
+                // Target node found
+                if(neighbor == end){
+
+                    let path = Stack();
+                    path.push(end);
+                    console.log(visited.stack);
+                    while(visited.isEmpty() != true){
+                        //visited.pop();
+                        path.push(visited.pop());
+                    }
+
+                    return path;
+                }
+
+                if(VisitedList.get(neighbor) != true){
+                    unvisited.enqueue(neighbor);
+                    VisitedList.set(neighbor, true);
+                }
+            }
+
+        }
+
     }
 
     return {
