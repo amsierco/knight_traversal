@@ -39,7 +39,13 @@ const createBoard = (() => {
     for(let i=0; i<8; i++){
         for(let j=0; j<8; j++){
             let boardTile = document.createElement('div');
-            boardTile.setAttribute('id', `${i}${j}`); //RowColumn
+
+            // '00' ID Error Fix
+            if(i==0){
+                boardTile.setAttribute('id', `${j}`); //Column
+            } else {
+                boardTile.setAttribute('id', `${i}${j}`); //RowColumn
+            }
 
             board.addVertex((i*10)+j); //Makes vertex ij
 
@@ -65,11 +71,23 @@ const createBoard = (() => {
         }
     }
 
-    // Initial position for knight [TEMP]
-    document.getElementById('40').appendChild(getKnight());
     //Graph Testing
     //board.printGraph();
     return board;
-  });
+});
+export const board = createBoard();
 
-  export const board = createBoard();
+export const moveKnight = (current=0, next=0) => {
+
+
+
+    // Initial position for knight [TEMP]
+    //document.getElementById(`${current}`).appendChild(getKnight());
+
+    document.getElementById(`${current}`).innerHTML = "";
+
+    //let currentDiv = document.getElementById(`${current}`);
+    //currentDiv.removeChild(currentDiv.firstChild);
+    let nextDiv = document.getElementById(`${next}`);
+    nextDiv.appendChild(getKnight());
+}

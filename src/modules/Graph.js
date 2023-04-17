@@ -15,7 +15,7 @@ export const Graph = () => {
 
     const addBiEdge = (v, w) => {
         AdjList.get(v).push(w);
-        //AdjList.get(w).push(v);
+        // AdjList.get(w).push(v);
     }
 
     const printGraph = () => {
@@ -53,15 +53,29 @@ export const Graph = () => {
 
             // Enqueue neighboring nodes
             for(let neighbor of AdjList.get(current)){
-                // Target node found
+                // Target vertex found
                 if(neighbor == end){
 
+                    // WORK ON THIS BACKTRACKING
+
                     let path = Stack();
-                    path.push(end);
-                    console.log(visited.stack);
+                    path.push(end); // Target Vertex
+                    //let valid = visited.pop(); // Immediate Target Neighbor
+                    let valid = end;
+                    //path.push(valid);
+
                     while(visited.isEmpty() != true){
-                        //visited.pop();
-                        path.push(visited.pop());
+                        let validNeighbors = AdjList.get(valid);
+                        for(let vn of validNeighbors){
+                            if(vn == visited.peek()){
+                                valid = visited.pop();
+                                path.push(valid);
+                                //break;
+                            } else {
+                                let temp = visited.pop();
+                                //console.log(temp);
+                            }
+                        }
                     }
 
                     return path;
@@ -72,9 +86,8 @@ export const Graph = () => {
                     VisitedList.set(neighbor, true);
                 }
             }
-
         }
-
+        alert('Vertex Not Found!');
     }
 
     return {
