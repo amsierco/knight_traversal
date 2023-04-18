@@ -8,6 +8,12 @@ function sleep(ms) {
     );
 }
 
+const placeDot = ((loc) => {
+    let dot = document.createElement('div');
+      dot.innerHTML = '<svg height="100" width="100"><circle cx="50" cy="50" r="20" stroke="black" stroke-width="3" fill="black"/></svg>';
+    document.getElementById(`${loc}`).appendChild(dot);
+    });
+
 const knightMoves = ( async (start, end) => {
 
     // Initial position
@@ -21,6 +27,7 @@ const knightMoves = ( async (start, end) => {
     for(let i=0; i<size; i++){
         let nextPos = pathStack.pop();
         moveKnight(currentPos, nextPos);
+        placeDot(currentPos);
         currentPos = nextPos;
         if(i+1<size){
             path += nextPos + " -> ";
@@ -32,4 +39,4 @@ const knightMoves = ( async (start, end) => {
     console.log(path);
 
 
-})(12,77);
+})(0,77);
