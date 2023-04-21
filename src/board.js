@@ -139,7 +139,6 @@ async function knightMoves(start, end){
     let currentPos = start;
 
     // Display for same position
-    console.log('size: '+size);
     if(size == 1){
         console.log(pathStack.peek() + " -> " + pathStack.pop());
         return;
