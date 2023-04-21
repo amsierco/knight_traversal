@@ -5,7 +5,7 @@ export const Graph = () => {
     let numOfVert = 0;
     let AdjList = new Map();
 
-    let VisitedList = new Map(); //TEMP Repetition concerns
+    let VisitedList = new Map();
 
     const addVertex = (v) => {
         AdjList.set(v, []);
@@ -35,6 +35,18 @@ export const Graph = () => {
     }
 
     const bfs = (start, end) => {
+        // Same spot
+        if(start == end){
+            let path = Stack();
+            path.push(end);
+            return path;
+        }
+
+        // Reset for multiple bfs
+        for(let key of VisitedList.keys()){
+            VisitedList.set(key, false);
+        }
+
         // Stores visited nodes
         VisitedList.set(start, true);
 
@@ -68,7 +80,6 @@ export const Graph = () => {
                         }
                         visited.pop()
                     }
-
                     return path;
                 }
 

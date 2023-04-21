@@ -34,7 +34,23 @@ const createBoard = (() => {
     let boardDOM = document.createElement('div');
     boardDOM.setAttribute('class', 'board');
     let board = Graph();
-  
+    let start = false;
+    let startID = null;
+    let endID = null;
+
+    function tileSelectionManager(tile){
+        if(start == false){
+            start = true;
+            startID = tile;
+        } else {
+            endID = tile;
+            knightMoves(startID, endID);
+            start = false;
+            startID = null;
+            endID = null;
+        }
+    }
+
     // DOM & Vertex creation
     for(let i=0; i<8; i++){
         for(let j=0; j<8; j++){
@@ -70,24 +86,76 @@ const createBoard = (() => {
             }
         }
     }
-
-    //Graph Testing
-    //board.printGraph();
+    // Selection event listener
+    for(let i=0; i<8; i++){
+        for(let j=0; j<8; j++){
+            document.getElementById(`${((i*10)+j)}`).addEventListener('click', () =>{
+                tileSelectionManager(((i*10)+j));
+            });
+        }
+    }
     return board;
 });
-export const board = createBoard();
+const board = createBoard();
 
-export const moveKnight = (current=0, next=0) => {
-
-
-
-    // Initial position for knight [TEMP]
-    //document.getElementById(`${current}`).appendChild(getKnight());
-
+const moveKnight = (current=0, next=0) => {
     document.getElementById(`${current}`).innerHTML = "";
-
-    //let currentDiv = document.getElementById(`${current}`);
-    //currentDiv.removeChild(currentDiv.firstChild);
     let nextDiv = document.getElementById(`${next}`);
     nextDiv.appendChild(getKnight());
+}
+
+
+
+// Sleep utility
+function sleep(ms) {
+    return new Promise(
+      resolve => setTimeout(resolve, ms)
+    );
+}
+
+// Place path labels
+const placeDot = ((loc, step) => {
+    let dot = document.createElement('div');
+    //dot.innerHTML = '<svg height="100" width="100"><circle cx="50" cy="50" r="20" stroke="black" stroke-width="3" fill="black"/></svg>';
+    dot.innerHTML = `<text>${step}</text>`;
+    document.getElementById(`${loc}`).appendChild(dot);
+});
+
+async function knightMoves(start, end){
+
+    // Clear board
+    for(let i=0; i<8; i++){
+        for(let j=0; j<8; j++){
+            document.getElementById(`${((i*10)+j)}`).innerHTML = "";
+        }
+    }
+
+    // Initial position
+    moveKnight(start, start); 
+
+    let pathStack = board.bfs(start, end);
+    let path = "";
+    let size = pathStack.size;
+    let currentPos = start;
+
+    // Display for same position
+    console.log('size: '+size);
+    if(size == 1){
+        console.log(pathStack.peek() + " -> " + pathStack.pop());
+        return;
+    }
+
+    for(let i=0; i<size; i++){
+        let nextPos = pathStack.pop();
+        moveKnight(currentPos, nextPos);
+        placeDot(currentPos, i);
+        currentPos = nextPos;
+        if(i+1<size){
+            path += nextPos + " -> ";
+        } else {
+            path += nextPos;
+        }
+        await sleep(100);
+    }
+    console.log(path);
 }
